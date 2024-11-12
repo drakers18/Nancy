@@ -3,11 +3,25 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { MsalProvider } from "@azure/msal-react";
+import { Configuration,  PublicClientApplication } from "@azure/msal-browser";
+
+const msalConfiguration: Configuration = {
+    auth: {
+        clientId: "client_id" // the only mandatory field in this object, uniquely identifies your app
+        // here you'll add the other fields that you might need based on the Azure portal settings
+    }
+};
+
+const pca = new PublicClientApplication(msalConfiguration);
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <MsalProvider instance={pca}>
+          <App />
+      </MsalProvider>
   </React.StrictMode>
 );
 
