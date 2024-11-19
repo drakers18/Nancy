@@ -34,6 +34,7 @@ def get_all():
 
 # Initialize the app to run on a local development server
 if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=7000, debug=False)
     # Create table and insert data if not already present
     conn = sqlite3.connect('db')
     cursor = conn.cursor()
