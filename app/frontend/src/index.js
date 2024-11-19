@@ -8,8 +8,13 @@ import { Configuration,  PublicClientApplication } from "@azure/msal-browser";
 
 const msalConfiguration: Configuration = {
     auth: {
-        clientId: "client_id" // the only mandatory field in this object, uniquely identifies your app
-        // here you'll add the other fields that you might need based on the Azure portal settings
+        clientId: "your-client-id-here",  // Your Azure app's client ID from the Azure portal
+        authority: "https://login.microsoftonline.com/common",  // Default authority for Microsoft accounts
+        redirectUri: "http://localhost:3000",  // The URI where the user will be redirected after sign-in
+    },
+    cache: {
+        cacheLocation: "sessionStorage",  // Choose between sessionStorage or localStorage
+        storeAuthStateInCookie: false,  // Set this to true if you're supporting older browsers
     }
 };
 
