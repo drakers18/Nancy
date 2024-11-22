@@ -7,14 +7,14 @@ networks:
 
 services:      
   stockdatabase:
-    image: userDB
+    image: stockdb
     ports:
       - 6000:6000
     networks:
       - Nancy_network
 
-  signIndatabase:
-    image: signInDB
+  signindatabase:
+    image: signdb
     ports:
       - 7000:7000
     networks:

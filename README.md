@@ -1,7 +1,8 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+# Create Network
+docker network create Nancy_network
 # Build Frontend
  docker build -t nancyui .
 
@@ -9,6 +10,14 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 docker build -t nancyback .
 
 # Build DB's
+in root do: cd db
+## First DB 
+cd signIn (in db)
+docker build -t signdb .
+
+# Second DB
+cd stockDB (in db)
+docker build -t stockdb .
 
 ## Available Scripts
 
