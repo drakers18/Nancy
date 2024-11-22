@@ -6,9 +6,16 @@ networks:
     external: true
 
 services:      
-  database:
+  stockdatabase:
     image: userDB
     ports:
       - 6000:6000
+    networks:
+      - Nancy_network
+
+  signIndatabase:
+    image: signInDB
+    ports:
+      - 7000:7000
     networks:
       - Nancy_network

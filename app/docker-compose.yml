@@ -10,7 +10,7 @@ networks:
 
 services:
   Nancy:
-    image: Nancyback
+    image: nancyback
     build:
       context: ./backend
     ports:
@@ -19,7 +19,7 @@ services:
       - Nancy_network
 
   react: 
-    image: Nancyui
+    image: nancyui
     build:
       context: ./frontend
     ports:

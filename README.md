@@ -2,6 +2,14 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+# Build Frontend
+ docker build -t nancyui .
+
+# Build Backend 
+docker build -t nancyback .
+
+# Build DB's
+
 ## Available Scripts
 
 In the project directory, you can run:

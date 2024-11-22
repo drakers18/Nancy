@@ -12,4 +12,4 @@ EXPOSE 6000
 
 ENV PYTHONUNBUFFERED=1
 
-CMD ["python", "db:app"]
+CMD ["python", "stockdb:app"]
