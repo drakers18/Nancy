@@ -1,45 +1,30 @@
-version: '3.8'
+version: '3'
+
+# YOU MUST define the external network "interviewGPT_network" manually on the command line so the 2 docker-compose files can communicate
+# Reason being that we can update the frontend and backend without worrying about changing the db container
+# If the db container is re-built, the data in the database will be lost
+# We will need to implement a db backup at some point (cloud storage or another methodology)
+networks:
+  Nancy_network:
+    external: true
 
 services:
-  frontend:
+  Nancy:
+    image: Nancyback
     build:
-      context: ./app/frontend
-    container_name: frontend
+      context: ./backend
     ports:
-      - "80:80"  # Expose frontend on port 80
-    depends_on:
-      - backend  # Ensure the backend starts before the frontend
+      - "5000:5000"
     networks:
-      - app-network  # Attach to a shared network
+      - Nancy_network
 
-  backend:
+  react: 
+    image: Nancyui
     build:
-      context: ./app/backend
-    container_name: backend
-    expose:
-      - "5000"  # Expose port 5000 to NGINX
-    environment:
-      - FLASK_APP=main.py
-      - FLASK_ENV=production
-    depends_on:
-      - db  # Ensure the backend waits for the DB to be ready
-    networks:
-      - app-network  # Attach to the shared network
-
-  nginx:
-    image: nginx:alpine
-    container_name: nginx
-    volumes:
-      - ./nginx.conf:/etc/nginx/nginx.conf:ro  # Mount custom NGINX config
-      - ./app/frontend/build:/usr/share/nginx/html  # Mount React build directory
+      context: ./frontend
     ports:
-      - "80:80"  # Expose port 80 for the frontend and proxy
+      - "3000:3000"
     depends_on:
-      - frontend
-      - backend  # NGINX depends on frontend and backend services
+      - Nancy
     networks:
-      - app-network  # Attach to the shared network
-
-networks:
-  app-network:
-    driver: bridge  # Create a custom network for frontend, backend, and nginx
+      - Nancy_network

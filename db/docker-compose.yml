@@ -1,14 +1,14 @@
-version: '3.8'
+version: '1'
 
-services:
-  flask-app:
-    build: .
-    container_name: userDB
+
+networks:
+  Nancy_network:
+    external: true
+
+services:      
+  database:
+    image: userDB
     ports:
-      - "5000:5000"
-    volumes:
-      - .:/app
-    environment:
-      - FLASK_APP=app.py
-      - FLASK_ENV=development
-    restart: always
+      - 6000:6000
+    networks:
+      - Nancy_network
