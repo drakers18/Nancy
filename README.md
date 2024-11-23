@@ -1,6 +1,10 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+INSTALL DOCKER DESKTOP IF YOU HAVENT ALREADY
+
+
 # Create Network
 docker network create Nancy_network
 # Build Frontend
@@ -18,6 +22,19 @@ docker build -t signdb .
 # Second DB
 cd stockDB (in db)
 docker build -t stockdb .
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Available Scripts
 
