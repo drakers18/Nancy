@@ -5,24 +5,34 @@ import json
 import requests
 from newsdataapi import NewsDataApiClient
 
+#API DOCS
+
+# Stock API:
+    # https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2023-01-09/2023-01-09?apiKey=J0fC9euSGHNip9Hw5MdyUBRv78YUWaa
+    # https://polygon.io/docs/stocks/getting-started
+
+# NEWS API:
+    # https://newsdata.io/documentation
+    #newsURL = "https://newsdata.io/api/1/latest?apikey="+newsApiKey+"&q="+keyword+"&language=en"
+
 
 investor_SYS_Prompt = "You are a financial advisor who will tell the user whether or not their investment is a good one depending on the data given to you"
 news_Sys_PROMPT = "You will be given articles of a politician with their recent stock trades, you will choose the most recent one and summarize it in one sentence"
-newsApiKey = os.getenv("NEWS_API")
-
+newsApiKey = os.getenv("NEWS_API_KEY")
 
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 * 1024  # 5 GB
-DATABASE_API_URL = "http://userDB:6000"
+SIGN_DATABASE_URL = "http://signindatabase:7000"
+STOCK_DATABASE_URL = "http://stockdatabase:6000"
 
 # CREATE 
 
-def forward_request(route, method, json_data=None):
+def forward_request(DBURL, route, method, json_data=None):
     try:
         if method == 'GET':
-            response = requests.get(f"{DATABASE_API_URL}/{route}")
+            response = requests.get(f"{DBURL}/{route}")
         elif method == 'POST':
-            response = requests.post(f"{DATABASE_API_URL}/{route}", json=json_data)
+            response = requests.post(f"{DBURL}/{route}", json=json_data)
         else:
             return abort(400, "Invalid HTTP method")
 
@@ -32,14 +42,59 @@ def forward_request(route, method, json_data=None):
     except requests.RequestException as e:
         return abort(500, f"Error forwarding request: {e}")
 
-# READ 
 
-@app.route('/getAll', methods=['GET'])
+
+# Database Routes
+
+# STOCK Section
+
+@app.route('/getAllInvestments', methods=['GET'])
 def getAllInvestments():
-    data, status_code = forward_request("getAllInvestments", "GET")
+    data, status_code = forward_request(STOCK_DATABASE_URL, "getAllInvestments", "GET")
     return jsonify(data), status_code
 
-#UPDATE 
+
+@app.route('/deleteINV', methods=['POST'])
+def deleteINV():
+    json_data = request.get_json()
+    data, status_code = forward_request(STOCK_DATABASE_URL, "deleteINV", "POST", json_data= json_data)
+    return jsonify(data), status_code
+
+
+@app.route('/getStock', methods=['POST'])
+def getStock():
+    json_data = request.get_json()
+    data, status_code = forward_request(STOCK_DATABASE_URL, "getStock", "POST", json_data= json_data)
+    return jsonify(data), status_code
+
+
+@app.route('/saveInvestment', methods=['POST'])
+def save():
+    json_data = request.get_json()
+    data, status_code = forward_request(STOCK_DATABASE_URL, "saveInvestment", "POST", json_data= json_data)
+    return jsonify(data), status_code
+
+
+
+# LOGIN SECTION
+
+@app.route('/login', methods=['POST'])
+def login():
+    json_data = request.get_json()
+    data, status_code = forward_request(SIGN_DATABASE_URL, "login", "POST", json_data= json_data)
+    return jsonify(data), status_code
+
+
+@app.route('/register', methods=['POST'])
+def register():
+    json_data = request.get_json()
+    data, status_code = forward_request(SIGN_DATABASE_URL, "register", "POST", json_data= json_data)
+    return jsonify(data), status_code
+
+
+
+
+# FRONTEND ROUTES
 
 @app.route('/fetchNEWS', methods =["POST"])
 def getAssessment():
@@ -59,8 +114,11 @@ def getASK():
     return jsonify("ASK", answer), 200
 
 
-
-
+@app.route('/StockDataRetrieval', methods = ["POST"])
+def getStockRetrieval():
+    stockChosen = request.files.get("stock")
+    answer = GetStockData(stockChosen)
+    return jsonify("Stock", answer), 200
 
 
 def openAI(sysprompt, prompt):
@@ -94,14 +152,13 @@ def openAI(sysprompt, prompt):
 
 
 
-
+# 3rd Party API 's
 
 
 
 def TrackPolitician(politician):
    
     keyword = politician+ " new trades"
-    #newsURL = "https://newsdata.io/api/1/latest?apikey="+newsApiKey+"&q="+keyword+"&language=en"
     api = NewsDataApiClient(apikey=newsApiKey)
     response = api.news_api(q=keyword, max_result=1) 
     print(response["results"][0])
@@ -134,6 +191,14 @@ def StockNews(stockName):
         desc= ''
     
     response = title + desc + content
+    return response.json()
+
+def GetStockData(stock):
+    response = requests.post("https://api.polygon.io/v2/aggs/ticker/"+stock+"/range/1/day/2023-01-09/2023-01-09?",
+                             headers= {
+                                "Content-Type": "application/json",
+                                "Authorization": f"Bearer {os.environ.get('STOCK_API_KEY')}",
+                             })
     return response.json()
 
 

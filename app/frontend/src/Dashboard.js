@@ -1,34 +1,20 @@
 import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-
+import InvestModal from "./components/InvestModal";
 // core components
-import Admin from "layouts/Admin.js";
-import RTL from "layouts/RTL.js";
+import "./App.css"
 
-import "./material-dashboard-material-ui-v4-main"
+
 const Dashboard = () =>{
 
     
        
      
     return (
-       
-        <BrowserRouter>
-        <Switch>
-          <Route path="/admin" component={Admin} />
-          <Route path="/rtl" component={RTL} />
-          <Redirect from="/" to="/admin/dashboard" />
-        </Switch>
-      </BrowserRouter>,
-      document.getElementById("root")
-       
-        
-
-
+       <>
+       <p>Welcome to the Dashboard</p>
+       <InvestModal></InvestModal>
+     </>
     )
-
-
-
-
 }
 export default Dashboard

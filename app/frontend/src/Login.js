@@ -1,18 +1,29 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import "./App.css"
 import axios from 'axios';
+import Dashboard from './Dashboard';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [LoggedIn, setLoggedIN] = useState(false)
 
+  useEffect(() =>{
+    if(success != '')
+    {
+      console.log("Success?: ", success)
+      setLoggedIN(true)
+    }
+  
+  },[success, LoggedIn])
   // Handle form submission for registration
   const handleRegister = async (event) => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:7000/register', { username, password });
+      const response = await axios.post('/register', { username, password });
       setSuccess(response.data.message);
       setError('');
     } catch (err) {
@@ -26,8 +37,9 @@ const Login = () => {
     event.preventDefault();
 
     try {
-      const response = await axios.post('http://localhost:7000/login', { username, password });
+      const response = await axios.post('/login', { username, password });
       setSuccess(response.data.message);
+
       setError('');
     } catch (err) {
       setError(err.response.data.error);
@@ -36,6 +48,8 @@ const Login = () => {
   };
 
   return (
+    <>
+    {!LoggedIn ?(
     <div>
       <h2>User Authentication</h2>
       <form>
@@ -65,7 +79,13 @@ const Login = () => {
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {success && <p style={{ color: 'green' }}>{success}</p>}
     </div>
+    ):(
+      <Dashboard />
+    )
+  }
+    </>
   );
+  
 };
 
 export default Login;

@@ -45,6 +45,7 @@ def register_user():
 # Endpoint to login a user
 @app.route('/login', methods=['POST'])
 def login_user():
+    print("HIT")
     data = request.json
     username = data.get('username')
     password = data.get('password')
@@ -60,7 +61,7 @@ def login_user():
 
     if result:
         stored_password = result[0]
-        if bcrypt.checkpw(password.encode('utf-8'), stored_password.encode('utf-8')):
+        if bcrypt.checkpw(password.encode('utf-8'), stored_password):
             return jsonify({"message": "Login successful"}), 200
         else:
             return jsonify({"error": "Invalid password"}), 401
