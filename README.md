@@ -8,9 +8,11 @@ INSTALL DOCKER DESKTOP IF YOU HAVENT ALREADY
 # Create Network
 docker network create Nancy_network
 # Build Frontend
+cd frontend
  docker build -t nancyui .
 
 # Build Backend 
+cd backend
 docker build -t nancyback .
 
 # Build DB's
@@ -24,7 +26,21 @@ cd stockDB (in db)
 docker build -t stockdb .
 
 
+### FINALLY ###
+We put it all together:
+in app dir (cd app)
 
+``` docker compose build``` (build containers)
+``` docker compose up ``` (run frontend and backend)
+
+
+# THEN ITS TIME FOR THE DB's
+cd db
+``` docker compose build```
+``` docker compose up```
+
+
+### NOW ITS RUNNING ON LOCALHOST:3000!
 
 
 
