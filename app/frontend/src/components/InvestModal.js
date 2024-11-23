@@ -32,7 +32,7 @@ return (
 
             <Form.Group>
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control autofocus value = {Quantity} onChange = {(e) => Quantity(e.target.value)} placeholder = "0"></Form.Control>
+                <Form.Control autofocus value = {Quantity} onChange = {(e) => setQuantity(e.target.value)} placeholder = "0"></Form.Control>
             </Form.Group>
         </Form>
 
