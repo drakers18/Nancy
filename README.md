@@ -9,19 +9,21 @@ INSTALL DOCKER DESKTOP IF YOU HAVENT ALREADY
 docker network create Nancy_network
 # Build Frontend
 cd frontend
- docker build -t nancyui .
-
 # Build Backend 
+cd ..
 cd backend
 docker build -t nancyback .
 
 # Build DB's
+cd ..
+cd ..
 in root do: cd db
 ## First DB 
 cd signIn (in db)
 docker build -t signdb .
 
 # Second DB
+cd ..
 cd stockDB (in db)
 docker build -t stockdb .
 
