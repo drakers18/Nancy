@@ -3,7 +3,7 @@ import "./App.css"
 import axios from 'axios';
 import Dashboard from './Dashboard';
 
-const Login = () => {
+const Login = (args) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -14,6 +14,7 @@ const Login = () => {
     if(success != '')
     {
       console.log("Success?: ", success)
+      args.setUsername(username)
       setLoggedIN(true)
     }
   
@@ -80,7 +81,7 @@ const Login = () => {
       {success && <p style={{ color: 'green' }}>{success}</p>}
     </div>
     ):(
-      <Dashboard />
+      <Dashboard username = {username} />
     )
   }
     </>

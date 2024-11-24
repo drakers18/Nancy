@@ -7,7 +7,7 @@ import "./App.css"
 //import DB from '../material-dashboard-master/material-dashboard-master/pages/dashboard.html'
 
 
-const Dashboard = () =>{
+const Dashboard = (args) =>{
 
     
        
@@ -17,8 +17,8 @@ const Dashboard = () =>{
       
 
 
-       <p>Welcome to the Dashboard</p>
-       <InvestModal></InvestModal>
+       <p>Welcome to the Dashboard {args.username}</p>
+       <InvestModal username = {args.username}/>
      
 
         <DialogFlowChatbot/>

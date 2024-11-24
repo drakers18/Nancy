@@ -1,13 +1,14 @@
 import './App.css';
+import {React, useState} from 'react';
 import LoginPage from "./Login";
 import Dashboard from "./Dashboard"
-import React from "react";
 
 function App() {
+  const [username, setUsername] = useState('')
   return (
        
       
-    <LoginPage/>
+    <LoginPage username = {username} setUsername ={setUsername}/>
           
         
   );

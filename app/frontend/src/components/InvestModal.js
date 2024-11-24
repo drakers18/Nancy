@@ -1,8 +1,10 @@
 import {React, useEffect, useState} from "react";
 import {Modal, Button, Form, FormGroup, FormControl} from 'react-bootstrap';
+import axios from 'axios';
+import { v4 as uuidv4 } from 'uuid';
+import { getDate } from "../utils";
 
-
-const InvestModal = () =>
+const InvestModal = (args) =>
 {
     const [Show, setShow] = useState(false);
     const [Tag , setTag] = useState('')
@@ -10,11 +12,32 @@ const InvestModal = () =>
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+  const SendToDB = async () =>
+  {
+    try {
+     let saveData = 
+      {
+        MI_Uuid: uuidv4(),
+        creator: args.username,
+        Stock: Tag,
+        Amount_Owned: Quantity,
+        date: getDate(),
+       
 
+
+      }
+      const response = await axios.post('/saveInvestment', { saveData });
+      
+    } catch (err) {
+      console.log("Error: ", err)
+    }
+
+  }
 
   const SaveStock =() =>
   {
 
+    handleClose()
   }
 
 return (
@@ -47,7 +70,7 @@ return (
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={SaveStock}>
             Save Changes
           </Button>
         </Modal.Footer>

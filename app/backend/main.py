@@ -121,10 +121,10 @@ def getASK():
     return jsonify("ASK", answer), 200
 
 
-@app.route('/StockDataRetrieval', methods = ["POST"])
+@app.route('/StockCurrentPrice', methods = ["POST"])
 def getStockRetrieval():
     stockChosen = request.files.get("stock")
-    answer = GetStockData(stockChosen)
+    answer = get_current_stock_price(stockChosen)
     return jsonify("Stock", answer), 200
 
 
@@ -155,7 +155,7 @@ def forward_response():
     dialogflow_request = request.get_json()
     user_message = dialogflow_request.get('queryResult', {}).get('queryText', '')
     stockName = dialogflow_request.get('queryResult', {}).get('parameters',{}).get('stock')
-    stockData = GetStockData(stockName)
+    stockData = GetStockDataRange(stockName)
     stockNews = GetStockNews(stockName)
 
     stockData = json.dumps(stockData)
@@ -223,7 +223,7 @@ def GetStockNews(stockName):
     print("Stock News: \n" + response +'\n')
     return response
 
-def GetStockData(stock):
+def GetStockDataRange(stock):
     current_date = datetime.now().strftime("%Y-%m-%d")
     last_year = datetime.now() - relativedelta(years=1)
     current_date_lastYear = last_year.strftime("%Y-%m-%d")
@@ -233,8 +233,31 @@ def GetStockData(stock):
                                 "Authorization": f"Bearer {os.environ.get('STOCK_API_KEY')}",
                             })
     print("Stock Data: \n")
-    print(response.json()+"\n")
+    print(response.json())
     return response.json()
+
+
+
+def get_current_stock_price(stock_symbol):
+    url = f"https://api.polygon.io/v2/last/last_trade/{stock_symbol}"
+    headers = {
+        "Authorization": f"Bearer {os.environ.get('STOCK_API_KEY')}"
+    }
+    response = requests.get(url, headers=headers)
+    
+    if response.status_code == 200:
+        data = response.json()
+        if data and 'last' in data:
+            last_trade = data['last']
+            price = last_trade['price']
+            return f"The current price of {stock_symbol} is ${price:.2f}"
+        else:
+            return "Could not retrieve the stock price."
+    else:
+        return f"Error: {response.status_code}, {response.text}"
+
+
+
 
 
 
