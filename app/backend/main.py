@@ -5,6 +5,8 @@ import json
 import logging
 from openai import OpenAI
 import openai
+from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 import requests
 from newsdataapi import NewsDataApiClient
@@ -112,7 +114,7 @@ def getAssessment():
 @app.route('/fetchConsultant', methods =["POST"])
 def getASK():
     stockChosen = request.files.get("stock")
-    stockNews = StockNews(stockChosen)
+    stockNews = GetStockNews(stockChosen)
     userPrompt = stockNews +"\n" +"User Asks: Is "+stockChosen+" a good/profitable investment?"
     answer = openAI(investor_SYS_Prompt, userPrompt )
     print(answer)
@@ -142,8 +144,8 @@ def openAI(sysprompt, content):
     ]
 )
 
-    print(completion.choices[0].message)
-    return completion.choices[0].message
+   # print(completion.choices[0].message)
+    return completion.choices[0].message.content
 
 
 @app.route('/forwardResponse', methods=['POST'])
@@ -152,17 +154,20 @@ def forward_response():
     # Parse the request from Dialogflow
     dialogflow_request = request.get_json()
     user_message = dialogflow_request.get('queryResult', {}).get('queryText', '')
+    stockName = dialogflow_request.get('queryResult', {}).get('parameters',{}).get('stock')
+    stockData = GetStockData(stockName)
+    stockNews = GetStockNews(stockName)
 
-    # Call ChatGPT API with the user message
-    sys = "You are a helpful assistant."
-    chatgpt_response = openAI(sys, user_message)
+    stockData = json.dumps(stockData)
+    stockNews = json.dumps(stockNews)
+
+    blob = f"Stock Data: \n"+ stockData +"\n"+"Stock News: \n"+ stockNews
+    chatgpt_response = openAI(investor_SYS_Prompt, str(blob) )
+    
+
     print("CHATGPT RESPONSE: ")
     print(chatgpt_response)
 
-    # Extract response content from ChatGPT
-    #chatgpt_content = chatgpt_response['choices'][0]['message']['content']
-    #print(chatgpt_response)
-    # Format response for Dialogflow
     response_to_dialogflow = {
         "fulfillmentText": chatgpt_response,
         "fulfillmentMessages": [
@@ -174,7 +179,7 @@ def forward_response():
         ]
     }
 
-    return jsonify(response_to_dialogflow), 200
+    return response_to_dialogflow, 200
 
 # 3rd Party API 's
 
@@ -199,12 +204,12 @@ def TrackPolitician(politician):
     return response.json()
 
 
-def StockNews(stockName):
-    keyword = stockName
+def GetStockNews(stockName):
+    keyword = stockName+' stock'
     #newsURL = "https://newsdata.io/api/1/latest?apikey="+newsApiKey+"&q="+keyword+"&language=en"
     api = NewsDataApiClient(apikey=newsApiKey)
-    response = api.news_api(q=keyword, max_result=1) 
-    print(response["results"][0])
+    response = api.news_api(q=keyword, max_result=1, language="en") 
+  #  print(response["results"][0])
   # Right now we are only taking the first resposnse but we do have all the others 
   # 
     title = response["results"][0]["title"]
@@ -215,14 +220,20 @@ def StockNews(stockName):
         desc= ''
     
     response = title + desc + content
-    return response.json()
+    print("Stock News: \n" + response +'\n')
+    return response
 
 def GetStockData(stock):
-    response = requests.post("https://api.polygon.io/v2/aggs/ticker/"+stock+"/range/1/day/2023-01-09/2023-01-09?",
+    current_date = datetime.now().strftime("%Y-%m-%d")
+    last_year = datetime.now() - relativedelta(years=1)
+    current_date_lastYear = last_year.strftime("%Y-%m-%d")
+    response = requests.get("https://api.polygon.io/v2/aggs/ticker/"+stock+"/range/1/year/"+current_date_lastYear+"/"+current_date+"?",
                              headers= {
                                 "Content-Type": "application/json",
                                 "Authorization": f"Bearer {os.environ.get('STOCK_API_KEY')}",
-                             })
+                            })
+    print("Stock Data: \n")
+    print(response.json()+"\n")
     return response.json()
 
 
