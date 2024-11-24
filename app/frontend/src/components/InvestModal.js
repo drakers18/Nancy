@@ -12,6 +12,11 @@ const InvestModal = () =>
 
 
 
+  const SaveStock =() =>
+  {
+
+  }
+
 return (
     <>
 
@@ -23,7 +28,7 @@ return (
         <Modal.Header closeButton>
           <Modal.Title>Modal heading</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Woohoo, you're reading this text in a modal!
+        <Modal.Body>Invest In a Stock!
         <Form>
             <Form.Group>
                 <Form.Label>Stock Tag</Form.Label>
