@@ -2,6 +2,10 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, abort
 import json
+import logging
+from openai import OpenAI
+import openai
+
 import requests
 from newsdataapi import NewsDataApiClient
 
@@ -15,11 +19,12 @@ from newsdataapi import NewsDataApiClient
     # https://newsdata.io/documentation
     #newsURL = "https://newsdata.io/api/1/latest?apikey="+newsApiKey+"&q="+keyword+"&language=en"
 
+load_dotenv()
 
 investor_SYS_Prompt = "You are a financial advisor who will tell the user whether or not their investment is a good one depending on the data given to you"
 news_Sys_PROMPT = "You will be given articles of a politician with their recent stock trades, you will choose the most recent one and summarize it in one sentence"
 newsApiKey = os.getenv("NEWS_API_KEY")
-
+openai.api_key = os.getenv('OPENAI_API_KEY')
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 * 1024  # 5 GB
 SIGN_DATABASE_URL = "http://signindatabase:7000"
@@ -121,36 +126,55 @@ def getStockRetrieval():
     return jsonify("Stock", answer), 200
 
 
-def openAI(sysprompt, prompt):
+def openAI(sysprompt, content):
+    # sysprompt, prompt
     load_dotenv()
-    messages = [
+    client = OpenAI()
+
+    completion = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": sysprompt},
         {
-            "role": "System",
-            "content": sysprompt
-        },
-        {
-            "role": "user", 
-            "content": prompt
+            "role": "user",
+            "content": content
         }
     ]
-    response = requests.post(
-        "https://api.openai.com/v1/chat/completions",
-        headers={
-            "Content-Type": "application/json",
-            "Authorization": f"Bearer {os.environ.get('OPENAI_API_KEY')}",
-        },
-        json={
-            "model": "gpt-4",
-            "messages": messages,
-            "max_tokens": 2000,
-            "n": 1,
-            "stop": None,
-            "temperature": 0.8,
-        },
-    )
-    return response.json()
+)
+
+    print(completion.choices[0].message)
+    return completion.choices[0].message
 
 
+@app.route('/forwardResponse', methods=['POST'])
+def forward_response():
+    print("HIT")
+    # Parse the request from Dialogflow
+    dialogflow_request = request.get_json()
+    user_message = dialogflow_request.get('queryResult', {}).get('queryText', '')
+
+    # Call ChatGPT API with the user message
+    sys = "You are a helpful assistant."
+    chatgpt_response = openAI(sys, user_message)
+    print("CHATGPT RESPONSE: ")
+    print(chatgpt_response)
+
+    # Extract response content from ChatGPT
+    #chatgpt_content = chatgpt_response['choices'][0]['message']['content']
+    #print(chatgpt_response)
+    # Format response for Dialogflow
+    response_to_dialogflow = {
+        "fulfillmentText": chatgpt_response,
+        "fulfillmentMessages": [
+            {
+                "text": {
+                    "text": [chatgpt_response]
+                }
+            }
+        ]
+    }
+
+    return jsonify(response_to_dialogflow), 200
 
 # 3rd Party API 's
 
@@ -204,4 +228,5 @@ def GetStockData(stock):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=False)
+    app.run(host='0.0.0.0', port=5000, debug=True)
+    logging.basicConfig(level=logging.DEBUG)

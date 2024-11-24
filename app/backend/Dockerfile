@@ -3,9 +3,11 @@ FROM python:3.10-slim
 
 # Set the working directory inside the container
 WORKDIR /app
-
+COPY .env /app/.env
 # Copy the backend code to the container
 COPY . .
+
+ENV PYTHONUNBUFFERED=1
 
 # Install dependencies
 RUN pip install -r requirements.txt
