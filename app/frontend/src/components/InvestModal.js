@@ -36,7 +36,8 @@ const InvestModal = (args) =>
 
   const SaveStock =() =>
   {
-
+    const cs =  args.getStockData(Tag)
+    console.log("STOCK: "+cs)
     handleClose()
   }
 

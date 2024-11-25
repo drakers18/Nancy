@@ -13,7 +13,7 @@ from newsdataapi import NewsDataApiClient
 
 #API DOCS
 
-# Stock API:
+# POLYGON Stock API:
     # https://api.polygon.io/v2/aggs/ticker/AAPL/range/1/day/2023-01-09/2023-01-09?apiKey=J0fC9euSGHNip9Hw5MdyUBRv78YUWaa
     # https://polygon.io/docs/stocks/getting-started
 
@@ -21,12 +21,20 @@ from newsdataapi import NewsDataApiClient
     # https://newsdata.io/documentation
     #newsURL = "https://newsdata.io/api/1/latest?apikey="+newsApiKey+"&q="+keyword+"&language=en"
 
+# Alpha Vantage Stock API
+    # https://www.alphavantage.co/support/#api-key
+
+# OPEN AI KEY
+    # https://platform.openai.com/docs/api-reference/introduction
+
+
 load_dotenv()
 
 investor_SYS_Prompt = "You are a financial advisor who will tell the user whether or not their investment is a good one depending on the data given to you"
 news_Sys_PROMPT = "You will be given articles of a politician with their recent stock trades, you will choose the most recent one and summarize it in one sentence"
 newsApiKey = os.getenv("NEWS_API_KEY")
 openai.api_key = os.getenv('OPENAI_API_KEY')
+alpha_api_key = os.environ.get('ALPHA_VANTAGE_API_KEY')
 app = Flask(__name__)
 app.config['MAX_CONTENT_LENGTH'] = 5 * 1024 * 1024 * 1024  # 5 GB
 SIGN_DATABASE_URL = "http://signindatabase:7000"
@@ -118,14 +126,16 @@ def getASK():
     userPrompt = stockNews +"\n" +"User Asks: Is "+stockChosen+" a good/profitable investment?"
     answer = openAI(investor_SYS_Prompt, userPrompt )
     print(answer)
-    return jsonify("ASK", answer), 200
+    return jsonify({"ASK", answer}), 200
 
 
 @app.route('/StockCurrentPrice', methods = ["POST"])
 def getStockRetrieval():
-    stockChosen = request.files.get("stock")
+    data = request.get_json()
+    stockChosen = data.get("stock")
+    print('Stock Chosen: '+stockChosen)
     answer = get_current_stock_price(stockChosen)
-    return jsonify("Stock", answer), 200
+    return answer, 200
 
 
 def openAI(sysprompt, content):
@@ -239,24 +249,33 @@ def GetStockDataRange(stock):
 
 
 def get_current_stock_price(stock_symbol):
-    url = f"https://api.polygon.io/v2/last/last_trade/{stock_symbol}"
-    headers = {
-        "Authorization": f"Bearer {os.environ.get('STOCK_API_KEY')}"
-    }
-    response = requests.get(url, headers=headers)
     
+    
+    # Construct the API URL
+    url = f"https://www.alphavantage.co/query"
+    params = {
+        "function": "TIME_SERIES_INTRADAY",
+        "symbol": stock_symbol,
+        "interval": "1min",
+        "apikey": alpha_api_key
+         }
+    
+    # Make the GET request
+    response = requests.get(url, params=params)
+
     if response.status_code == 200:
         data = response.json()
-        if data and 'last' in data:
-            last_trade = data['last']
-            price = last_trade['price']
-            return f"The current price of {stock_symbol} is ${price:.2f}"
+        
+        # Check if data is valid
+        if "Time Series (1min)" in data:
+            # Get the most recent time entry
+            last_refreshed = data['Meta Data']['3. Last Refreshed']
+            open_price = data['Time Series (1min)'][last_refreshed]['1. open']
+            return f"Open price for {stock_symbol} (as of {last_refreshed}): ${open_price}"
         else:
-            return "Could not retrieve the stock price."
+            return "Error: Could not retrieve stock data. Check the symbol or API limits."
     else:
         return f"Error: {response.status_code}, {response.text}"
-
-
 
 
 

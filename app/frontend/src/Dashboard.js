@@ -18,7 +18,7 @@ const Dashboard = (args) =>{
 
 
        <p>Welcome to the Dashboard {args.username}</p>
-       <InvestModal username = {args.username}/>
+       <InvestModal username = {args.username}  getStockData ={args.getStockData}/>
      
 
         <DialogFlowChatbot/>

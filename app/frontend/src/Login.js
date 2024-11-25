@@ -81,7 +81,7 @@ const Login = (args) => {
       {success && <p style={{ color: 'green' }}>{success}</p>}
     </div>
     ):(
-      <Dashboard username = {username} />
+      <Dashboard username = {username}  getStockData = {args.getStockData} />
     )
   }
     </>
