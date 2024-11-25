@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="../assets/css/material-dashboard.css?v=3.2.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: flex-start;
+            align-items: flex-start;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0; /* Light grey background */
+            color: white; /* White text */
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 250px;
+            height: 100%;
+            background-color: #007BFF; /* Blue color */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            justify-content: space-between; /* Distribute items evenly */
+        }
+
+        .sidebar .logo {
+            margin-bottom: 30px;
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .sidebar .profile {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .sidebar .profile img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar ul li {
+            padding: 12px;
+            margin: 10px 0;
+            background-color: #0056b3; /* Slightly darker blue */
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar ul li:hover {
+            background-color: #004085; /* Even darker blue on hover */
+        }
+
+        /* Content Styles */
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center; /* Center horizontally */
+            background-color: #f0f0f0; /* Light grey background for content area */
+            width: 100%; /* Ensure content takes up full width */
+        }
+
+        h1 {
+            color: #333; /* Dark grey color for the MyProfile header */
+            text-align: center; /* Center the MyProfile header */
+            width: 100%;
+        }
+
+        /* Sidebar - Move Log Out to the bottom */
+        .logout-container {
+            margin-top: auto; /* Pushes it to the bottom */
+        }
+
+        /* Chart Styles */
+        .pie-chart-container {
+            width: 400px; /* Larger size */
+            height: 400px; /* Larger size */
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* My Portfolio Header Styles */
+        .my-portfolio-header {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        /* Total Header Styles */
+        .total-header {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .total-value {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* Stock Prices Container */
+        .stock-prices {
+            position: absolute;
+            right: 20px; /* Align to the right */
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            color: #333; /* Dark grey color */
+        }
+
+        .stock-prices div {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        Nancy.io
+    </div>
+
+    <!-- Profile Picture and Greeting Message (Above Sidebar Buttons) -->
+    <div class="profile">
+        <img src="https://via.placeholder.com/150" alt="User Profile Picture">
+        <div>Hello, username!</div> <!-- Changed to "Hello, username!" -->
+    </div>
+
+    <!-- Sidebar Buttons -->
+    <ul>
+        <li>Dashboard</li> <!-- New Dashboard Button -->
+        <li>MyProfile</li>
+        <li>Settings</li>
+    </ul>
+
+    <!-- Log Out Button at the Bottom -->
+    <div class="logout-container">
+        <ul>
+            <li>Log Out</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <h1>My Profile</h1> <!-- Centered MyProfile header -->
+
+    <!-- My Portfolio Header -->
+    <div class="my-portfolio-header">My Portfolio</div>
+
+    <!-- Pie Chart -->
+    <div class="pie-chart-container">
+        <canvas id="pie-chart"></canvas>
+    </div>
+
+    <!-- Total Header and Value -->
+    <div class="total-header">Total</div>
+    <div class="total-value" id="total-value">$0.00</div>
+</div>
+
+<!-- Stock Prices Section -->
+<div class="stock-prices">
+    <div class="stock1" id="stock1">Stock 1: $150.50</div> <!-- Example price for Stock 1 -->
+    <div class="stock2" id="stock2">Stock 2: $210.75</div> <!-- Example price for Stock 2 -->
+    <div class="stock3" id="stock3">Stock 3: $135.25</div> <!-- Example price for Stock 3 -->
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Pie chart data
+    const data = {
+        labels: ['Stock 1', 'Stock 2', 'Stock 3'],
+        datasets: [{
+            data: [300, 150, 250],
+            backgroundColor: ['#43A047', '#1E88E5', '#E53935'],
+            hoverBackgroundColor: ['#388E3C', '#1976D2', '#D32F2F'],
+        }]
+    };
+
+    // Pie chart options
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            tooltip: {
+                callbacks: {
+                    label: function(tooltipItem) {
+                        return "$" + tooltipItem.raw.toFixed(2); // Add dollar sign to the tooltip
+                    }
+                }
+            }
+        }
+    };
+
+    // Create the pie chart
+    const ctx = document.getElementById('pie-chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
+
+    // Calculate and display the total stock value
+    const totalStockValue = data.datasets[0].data.reduce((acc, value) => acc + value, 0);
+    document.getElementById('total-value').textContent = "$" + totalStockValue.toFixed(2); // Format with dollar sign
+
+    // Stock prices (current and previous day prices)
+    const currentPrices = {
+        stock1: 150.50,
+        stock2: 210.75,
+        stock3: 135.25
+    };
+
+    const previousPrices = {
+        stock1: 140.00,
+        stock2: 200.00,
+        stock3: 130.00
+    };
+
+    // Stock price updates: Compare current price to the previous day's price
+    const stockPrices = [
+        { elementId: 'stock1', currentPrice: currentPrices.stock1, previousPrice: previousPrices.stock1 },
+        { elementId: 'stock2', currentPrice: currentPrices.stock2, previousPrice: previousPrices.stock2 },
+        { elementId: 'stock3', currentPrice: currentPrices.stock3, previousPrice: previousPrices.stock3 }
+    ];
+
+    stockPrices.forEach(stock => {
+        const stockElement = document.getElementById(stock.elementId);
+        const priceChange = stock.currentPrice - stock.previousPrice;
+        const priceColor = priceChange >= 0 ? 'green' : 'red'; // Green if up, red if down
+        stockElement.textContent = `${stock.elementId.replace('stock', 'Stock ')}: $${stock.currentPrice.toFixed(2)}`;
+        stockElement.style.color = priceColor; // Set color based on price change
+    });
+</script>
+</body>
+</html>
+
