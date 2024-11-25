@@ -271,7 +271,7 @@ def get_current_stock_price(stock_symbol):
             # Get the most recent time entry
             last_refreshed = data['Meta Data']['3. Last Refreshed']
             open_price = data['Time Series (1min)'][last_refreshed]['1. open']
-            return f"Open price for {stock_symbol} (as of {last_refreshed}): ${open_price}"
+            return open_price
         else:
             return "Error: Could not retrieve stock data. Check the symbol or API limits."
     else:

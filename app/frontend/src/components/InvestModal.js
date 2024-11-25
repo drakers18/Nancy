@@ -7,14 +7,29 @@ import { getDate } from "../utils";
 const InvestModal = (args) =>
 {
     const [Show, setShow] = useState(false);
-    const [Tag , setTag] = useState('')
-    const [Quantity , setQuantity] = useState('')
+    const [Tag , setTag] = useState(null)
+    const [Quantity , setQuantity] = useState(null)
+    const [CurrentPrice, setCurrentPrice] = useState(null)
+    const [BuyPrice, setBuyPrice] = useState(null)
+    const [User_Balance, setUserBalance] = useState(null)
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+  useEffect(() =>{
+    
+    if(CurrentPrice && BuyPrice && User_Balance)
+    {
+      console.log(CurrentPrice)
+      console.log(BuyPrice)
+      console.log(User_Balance)
+    }
+    
+  },[ CurrentPrice, BuyPrice, User_Balance])
 
   const SendToDB = async () =>
   {
     try {
+      if(Tag && Quantity && CurrentPrice && BuyPrice && User_Balance){
      let saveData = 
       {
         MI_Uuid: uuidv4(),
@@ -22,22 +37,33 @@ const InvestModal = (args) =>
         Stock: Tag,
         Amount_Owned: Quantity,
         date: getDate(),
+        Buy_Price: BuyPrice,
+        Current_Price: CurrentPrice,
+        Profit_Margin: 0,
+        User_Balance: User_Balance
+
        
 
 
       }
       const response = await axios.post('/saveInvestment', { saveData });
-      
+      console.log(response.data.message)
+    }  
     } catch (err) {
       console.log("Error: ", err)
     }
-
+    
+    
   }
 
-  const SaveStock =() =>
+  const SaveStock =async () =>
   {
-    const cs =  args.getStockData(Tag)
-    console.log("STOCK: "+cs)
+    const cs =  await args.getStockData(Tag)
+    setBuyPrice(cs)
+    setCurrentPrice(cs)
+    setUserBalance(cs)
+    console.log(cs)
+ //   SendToDB()
     handleClose()
   }
 

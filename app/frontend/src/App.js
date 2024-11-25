@@ -9,10 +9,8 @@ function App() {
 
   const getCurrentStockData = async (stock) =>
   {
-    console.log('St CHOSEN: '+stock)
     const response = await axios.post('/StockCurrentPrice', { stock });
-    console.log(response)
-    return response
+    return response.data
   }
 
   return (
