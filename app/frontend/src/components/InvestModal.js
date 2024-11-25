@@ -63,7 +63,7 @@ const InvestModal = (args) =>
     setCurrentPrice(cs)
     setUserBalance(cs)
     console.log(cs)
- //   SendToDB()
+    SendToDB()
     handleClose()
   }
 
