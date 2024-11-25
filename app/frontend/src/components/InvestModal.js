@@ -71,7 +71,7 @@ return (
     <>
 
       <Button variant="primary" onClick={handleShow}>
-        Invest
+        +
       </Button>
 
       <Modal show={Show} onHide={handleClose} tabIndex={-1}>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Dashboard</title>
+    <link rel="stylesheet" href="../assets/css/material-dashboard.css?v=3.2.0">
+    <style>
+       
+    </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+    <div class="logo">
+        Nancy.io
+    </div>
+
+    <!-- User Profile Picture -->
+    <div class="profile">
+        <img src="https://via.placeholder.com/150" alt="User Profile Picture">
+        <div>Hello, username!</div> <!-- Changed to "Hello, username!" -->
+    </div>
+
+    <!-- Sidebar Buttons -->
+    <ul>
+        <li>MyProfile</li>
+        <li>Settings</li>
+    </ul>
+
+    <!-- Log Out Button at the Bottom -->
+    <div class="logout-container">
+        <ul>
+            <li>Log Out</li>
+        </ul>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="content">
+    <h1>Dashboard</h1> <!-- Centered Dashboard header -->
+
+    <h2 class="news-header">News</h2> <!-- Centered News Header with extra space below -->
+
+    <!-- Here you can display new articles under News -->
+
+    <h2 class="invest-header">Invest</h2> <!-- Centered Invest Header with increased space above -->
+
+    <!-- Add Button under Invest -->
+    <button class="add-button">+</button>
+</div>
+
+<!-- Graphs on the Right -->
+<div class="graphs-container">
+    <div class="graph-header">Stock 1</div>
+    <canvas id="line-chart-1"></canvas>
+    <div class="graph-header">Stock 2</div>
+    <canvas id="line-chart-2"></canvas>
+    <div class="graph-header">Stock 3</div>
+    <canvas id="line-chart-3"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Helper function to create a line chart
+    function createLineChart(ctx, label, data, color) {
+        return new Chart(ctx, {
+            type: "line",
+            data: {
+                labels: ["Day 1", "Day 2", "Day 3", "Day 4", "Day 5"],
+                datasets: [{
+                    label: label,
+                    data: data,
+                    borderColor: color,
+                    backgroundColor: "transparent",
+                    borderWidth: 1,
+                    tension: 0.4,
+                    pointRadius: 8,
+                    pointBackgroundColor: color,
+                    pointBorderColor: "transparent",
+                    hitRadius: 20,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        callbacks: {
+                            // Add dollar sign to the tooltip value
+                            label: function(tooltipItem) {
+                                return "$" + tooltipItem.raw.toFixed(2); // Format as currency
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: { display: false },
+                        grid: { display: false },
+                    },
+                    x: {
+                        ticks: { display: false },
+                        grid: { display: false },
+                    },
+                },
+            },
+        });
+    }
+
+    // Stock 1 Graph
+    createLineChart(
+        document.getElementById("line-chart-1").getContext("2d"),
+        "Stock 1",
+        [150, 155, 160, 158, 165],
+        "#43A047"
+    );
+
+    // Stock 2 Graph
+    createLineChart(
+        document.getElementById("line-chart-2").getContext("2d"),
+        "Stock 2",
+        [200, 198, 205, 210, 220],
+        "#1E88E5"
+    );
+
+    // Stock 3 Graph
+    createLineChart(
+        document.getElementById("line-chart-3").getContext("2d"),
+        "Stock 3",
+        [120, 125, 130, 128, 135],
+        "#E53935"
+    );
+</script>
+</body>
+</html>
