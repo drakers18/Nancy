@@ -197,7 +197,7 @@ def forward_response():
 
 def TrackPolitician(politician):
    
-    keyword = politician+ " new trades"
+    keyword = politician+ " new investments"
     api = NewsDataApiClient(apikey=newsApiKey)
     response = api.news_api(q=keyword, max_result=1) 
     print(response["results"][0])

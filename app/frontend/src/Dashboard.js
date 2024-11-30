@@ -114,14 +114,34 @@ const Dashboard = (args) =>{
     <h1>Dashboard</h1> 
 
     <h2 class="news-header">News</h2>
+    <div className="news-cards-container">
+    <div className="news-card">
+        <img src="https://via.placeholder.com/150" alt="News Thumbnail" />
+        <div className="news-content">
+            <h3 className="news-title">News Title 1</h3>
+            <p className="news-description" style={{color:'black'}}>
+                This is a brief description of the news. It provides a summary of the content.
+            </p>
+        </div>
+    </div>
+
+    <div className="news-card">
+        <img src="https://via.placeholder.com/150" alt="News Thumbnail" />
+        <div className="news-content">
+            <h3 className="news-title" >News Title 2</h3>
+            <p className="news-description" style={{color:'black'}}>
+                This is another brief description of the news. Learn more by clicking on it.
+            </p>
+        </div>
+    </div>
 
 
-    <h2 class="invest-header">Invest</h2>
+    <h2 class="invest-header" style={{marginTop:'2%'}}>Invest</h2>
 
     <InvestModal username = {args.username}  getStockData ={args.getStockData}/>
      
 </div>
-
+</div>
 <div class="graphs-container">
     <div class="graph-header">Stock 1</div>
     <canvas id="line-chart-1"></canvas>

@@ -2,6 +2,9 @@
   text-align: center;
   width: 100%;
 }
+#root{
+  width: 100%;
+}
 body {
   width: 100% !important;
   display: flex;
@@ -76,6 +79,23 @@ body {
   justify-content: flex-start;
   align-items: center; /* Center horizontally */
   background-color: #f0f0f0; /* Light grey background for content area */
+}
+.news-cards-container {
+  display: flex;
+  flex-direction: column; /* Stack cards vertically by default */
+  gap: 20px; /* Add spacing between cards */
+  padding: 20px;
+}
+
+/* Individual news card styles */
+.news-card {
+  display: flex;
+  flex-direction: row; /* Align image and content side by side */
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .graphs-container {
