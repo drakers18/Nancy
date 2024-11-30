@@ -114,9 +114,9 @@ def register():
 @app.route('/fetchNEWS', methods =["POST"])
 def getAssessment():
     politician = request.files.get("politician")
-    newsFeed = TrackPolitician(politician)
-    answer = openAI(news_Sys_PROMPT, newsFeed)
-    return jsonify("NEWS", answer), 200
+    title, newsFeed = TrackPolitician(politician)
+    summary = openAI(news_Sys_PROMPT, newsFeed)
+    return jsonify("NEWS", summary, title), 200
 
 
 @app.route('/fetchConsultant', methods =["POST"])
@@ -211,7 +211,7 @@ def TrackPolitician(politician):
         desc= ''
     
     response = title + desc + content
-    return response.json()
+    return (title, response.json())
 
 
 def GetStockNews(stockName):

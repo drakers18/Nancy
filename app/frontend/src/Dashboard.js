@@ -14,7 +14,12 @@ Chart.register(LinearScale, CategoryScale, LineElement, PointElement, Title, Too
 
 
 const Dashboard = (args) =>{
+    const [NewsTitle1, setNewsTitle1] = useState(null)
+    const [NewsDesc1, setNewsDesc1] = useState(null)
+    const [NewsTitle2, setNewsTitle2] = useState(null)
+    const [NewsDec2, setNewsDesc2] = useState(null)
     useEffect(() => {
+        fetchNews()
         // Ensure the DOM is ready before creating the charts
         const chart1 = document.getElementById("line-chart-1");
         const chart2 = document.getElementById("line-chart-2");
@@ -28,6 +33,11 @@ const Dashboard = (args) =>{
             console.error("Chart containers not found.");
         }
     }, []); // Empty dependency array to run this effect once when the component mounts
+
+    function fetchNews(){
+        
+    }
+
 
     function createLineChart(ctx, label, data, color) {
         return new Chart(ctx, {
@@ -118,9 +128,9 @@ const Dashboard = (args) =>{
     <div className="news-card">
         <img src="https://via.placeholder.com/150" alt="News Thumbnail" />
         <div className="news-content">
-            <h3 className="news-title">News Title 1</h3>
+            <h3 className="news-title">{NewsTitle1}</h3>
             <p className="news-description" style={{color:'black'}}>
-                This is a brief description of the news. It provides a summary of the content.
+                {NewsDesc1}
             </p>
         </div>
     </div>
@@ -128,10 +138,10 @@ const Dashboard = (args) =>{
     <div className="news-card">
         <img src="https://via.placeholder.com/150" alt="News Thumbnail" />
         <div className="news-content">
-            <h3 className="news-title" >News Title 2</h3>
+            <h3 className="news-title" >{NewsTitle2}</h3>
             <p className="news-description" style={{color:'black'}}>
-                This is another brief description of the news. Learn more by clicking on it.
-            </p>
+                {NewsDec2}
+                </p>
         </div>
     </div>
 
