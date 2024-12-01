@@ -76,18 +76,18 @@ return (
 
       <Modal show={Show} onHide={handleClose} tabIndex={-1}>
         <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+          <Modal.Title>Investor</Modal.Title>
         </Modal.Header>
         <Modal.Body>Invest In a Stock!
         <Form>
             <Form.Group>
                 <Form.Label>Stock Tag</Form.Label>
-                <Form.Control autofocus value = {Tag} onChange = {(e) => setTag(e.target.value)} placeholder = "ie: VOO, TSLA"></Form.Control>
+                <Form.Control autofocus value = {Tag} onChange = {(e) => setTag(e.target.value)} placeholder = "  ie: VOO, TSLA"></Form.Control>
             </Form.Group>
 
             <Form.Group>
                 <Form.Label>Quantity</Form.Label>
-                <Form.Control autofocus value = {Quantity} onChange = {(e) => setQuantity(e.target.value)} placeholder = "0"></Form.Control>
+                <Form.Control autofocus value = {Quantity} onChange = {(e) => setQuantity(e.target.value)} placeholder = "  0"></Form.Control>
             </Form.Group>
         </Form>
 

@@ -148,8 +148,8 @@ h2 {
 
 /* Add extra margin to push the News header further down */
 .news-header {
-  margin-top: 100px; /* Increased margin to push the News header further down */
-  margin-bottom: 50px; /* Additional space below News */
+  margin-top: 50px; /* Increased margin to push the News header further down */
+  margin-bottom: 20px; /* Additional space below News */
 }
 
 /* Add extra margin to push the Invest header further down */

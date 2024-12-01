@@ -14,7 +14,9 @@ const Login = (args) => {
     if(success != '')
     {
       console.log("Success?: ", success)
-      args.setUsername(username)
+      if(args.username == '')
+        args.setUsername(username)
+      
       setLoggedIN(true)
     }
   

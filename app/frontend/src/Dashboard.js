@@ -1,23 +1,43 @@
 import "./App.css"
-
+import axios from "axios";
 import {React, useEffect, useState} from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import InvestModal from "./components/InvestModal";
 import DialogFlowChatbot from "./components/DialogFlow";
 import { Chart, LinearScale, CategoryScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from "chart.js";
-
+import Login from "./Login";
+import MyProfilePage from "./MyProfile"
+import userImage from "./assets/userprofile.webp"
 // Register the required components
 Chart.register(LinearScale, CategoryScale, LineElement, PointElement, Title, Tooltip, Legend, LineController);
 
 // core components
-//import DB from '../material-dashboard-master/material-dashboard-master/pages/dashboard.html'
 
 
 const Dashboard = (args) =>{
+
+    const [NewsLoaded, setNewsLoaded] = useState(false)
+
     const [NewsTitle1, setNewsTitle1] = useState(null)
     const [NewsDesc1, setNewsDesc1] = useState(null)
+    const [imageURL1, setImageURL1] = useState(null)
+
     const [NewsTitle2, setNewsTitle2] = useState(null)
     const [NewsDec2, setNewsDesc2] = useState(null)
+    const [imageURL2, setImageURL2] = useState(null)
+
+    const [LoggedOut, setLogout] = useState(false)
+    const [MyProfile, setMyProfile] = useState(false)
+
+
+    useEffect(() => {
+        if((NewsTitle1, NewsDesc1, imageURL1, NewsTitle2, NewsDec2, imageURL2) != null)
+        {
+            setNewsLoaded(true)
+        }
+    }, [NewsTitle1, NewsDesc1, imageURL1, NewsTitle2, NewsDec2, imageURL2, NewsLoaded])
+
+
     useEffect(() => {
         fetchNews()
         // Ensure the DOM is ready before creating the charts
@@ -34,8 +54,20 @@ const Dashboard = (args) =>{
         }
     }, []); // Empty dependency array to run this effect once when the component mounts
 
-    function fetchNews(){
+    async function fetchNews()
+    {
+        /*
+        const response1 = await axios.post('/fetchNEWS', {"index": 0});
+        const response2 = await axios.post('/fetchNEWS', {"index": 1});
         
+        setNewsTitle1(response1.data[0])
+        setNewsDesc1(response1.data[1])
+        setImageURL1(response1.data[2])
+
+        setNewsTitle2(response2.data[0])
+        setNewsDesc2(response2.data[1])
+        setImageURL2(response2.data[2])
+    */
     }
 
 
@@ -87,12 +119,14 @@ const Dashboard = (args) =>{
        
      
     return (
+    
        <>
-      
-
+         {!LoggedOut ? (
+            <>
         <DialogFlowChatbot/>
       
-
+            {!MyProfile ? (
+                <>
         <head>
              <title>Finance Dashboard</title>
         </head>
@@ -104,18 +138,18 @@ const Dashboard = (args) =>{
         </div>
 
     <div class="profile">
-        <img src="https://via.placeholder.com/150" alt="User Profile Picture"></img>
+        <img src={userImage} alt="User Profile Picture"></img>
         <div>Hello, {args.username}!</div> 
     </div>
 
     <ul>
-        <li>MyProfile</li>
-        <li>Settings</li>
+        <li onClick={() => setMyProfile(true)}>MyProfile</li>
+        <li>Fake Button</li>
     </ul>
 
     <div class="logout-container">
         <ul>
-            <li>Log Out</li>
+            <li onClick={() => setLogout(true)}>Log Out</li>
         </ul>
     </div>
 </div>
@@ -124,33 +158,42 @@ const Dashboard = (args) =>{
     <h1>Dashboard</h1> 
 
     <h2 class="news-header">News</h2>
+
+    {NewsLoaded ? ( 
+        
     <div className="news-cards-container">
     <div className="news-card">
-        <img src="https://via.placeholder.com/150" alt="News Thumbnail" />
+        <img src={imageURL1} width= '140px' height= '141px' alt="News Thumbnail" />
         <div className="news-content">
-            <h3 className="news-title">{NewsTitle1}</h3>
-            <p className="news-description" style={{color:'black'}}>
+            <h3 className="news-title" style={{fontSize:'large', paddingLeft:'2%'}}>{NewsTitle1}</h3>
+            <p className="news-description" style={{color:'black', fontSize:'smaller', paddingLeft:'2%'}}>
                 {NewsDesc1}
             </p>
         </div>
     </div>
 
     <div className="news-card">
-        <img src="https://via.placeholder.com/150" alt="News Thumbnail" />
+        <img src={imageURL2}  width= '140px' height= '141px' alt="News Thumbnail" />
         <div className="news-content">
-            <h3 className="news-title" >{NewsTitle2}</h3>
-            <p className="news-description" style={{color:'black'}}>
+            <h3 className="news-title" style={{fontSize:'large', paddingLeft:'2%'}} >{NewsTitle2}</h3>
+            <p className="news-description" style={{color:'black', fontSize:'smaller', paddingLeft:'2%'}}>
                 {NewsDec2}
                 </p>
         </div>
     </div>
+    
+    
+    
 
-
-    <h2 class="invest-header" style={{marginTop:'2%'}}>Invest</h2>
-
-    <InvestModal username = {args.username}  getStockData ={args.getStockData}/>
-     
 </div>
+    ):(
+        <p style={{fontSize:'large', backgroundColor:'black'}}>Loading ...</p>
+)}
+
+<h2 class="invest-header" style={{marginTop:'2%'}}>Invest</h2>
+<InvestModal username = {args.username}  getStockData ={args.getStockData}/>
+
+
 </div>
 <div class="graphs-container">
     <div class="graph-header">Stock 1</div>
@@ -164,8 +207,17 @@ const Dashboard = (args) =>{
 
 
 </body>
-  
+</>
+): (
+  <MyProfilePage></MyProfilePage>
+)}
+</>
+    ): (
+        <Login></Login>
+    )}
      </>
-    )
-}
+
+
+
+)}
 export default Dashboard

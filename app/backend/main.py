@@ -31,8 +31,8 @@ from newsdataapi import NewsDataApiClient
 load_dotenv()
 
 investor_SYS_Prompt = "You are a financial advisor who will tell the user whether or not their investment is a good one depending on the data given to you"
-news_Sys_PROMPT = "You will be given articles of a politician with their recent stock trades, you will choose the most recent one and summarize it in one sentence"
-newsApiKey = os.getenv("NEWS_API_KEY")
+news_Sys_PROMPT = "You will be given a news article give it an accurate summary (2-5 sentences)"
+newsApiKey = os.getenv("NEWS_DATAIO_API_KEY")
 openai.api_key = os.getenv('OPENAI_API_KEY')
 alpha_api_key = os.environ.get('ALPHA_VANTAGE_API_KEY')
 app = Flask(__name__)
@@ -113,10 +113,11 @@ def register():
 
 @app.route('/fetchNEWS', methods =["POST"])
 def getAssessment():
-    politician = request.files.get("politician")
-    title, newsFeed = TrackPolitician(politician)
+    data = request.get_json()
+    index = data.get("index")
+    title, newsFeed, image = TrackPolitician(index)
     summary = openAI(news_Sys_PROMPT, newsFeed)
-    return jsonify("NEWS", summary, title), 200
+    return jsonify(title, summary, image), 200
 
 
 @app.route('/fetchConsultant', methods =["POST"])
@@ -195,23 +196,23 @@ def forward_response():
 
 
 
-def TrackPolitician(politician):
+def TrackPolitician(index):
    
-    keyword = politician+ " new investments"
+    keyword ="top investments"
     api = NewsDataApiClient(apikey=newsApiKey)
-    response = api.news_api(q=keyword, max_result=1) 
-    print(response["results"][0])
+    response = api.news_api(q=keyword, max_result=2, country="us", language="en") 
+    print(response["results"][index])
   # Right now we are only taking the first resposnse but we do have all the others 
   # 
-    title = response["results"][0]["title"]
-    desc = response["results"][0]["description"]
-    content = response["results"][0]["content"]
-    
+    title = response["results"][index]["title"]
+    desc = response["results"][index]["description"]
+    content = response["results"][index]["content"]
+    image = response["results"][index]["image_url"]
     if desc is None:
         desc= ''
     
     response = title + desc + content
-    return (title, response.json())
+    return (title, response, image)
 
 
 def GetStockNews(stockName):
