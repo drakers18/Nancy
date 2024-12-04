@@ -143,7 +143,7 @@ const Dashboard = (args) =>{
     </div>
 
     <ul>
-        <li onClick={() => setMyProfile(true)}>MyProfile</li>
+        <li onClick={() => setMyProfile(true)}>My Investments</li>
         <li>Fake Button</li>
     </ul>
 
