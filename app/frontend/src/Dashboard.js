@@ -56,7 +56,7 @@ const Dashboard = (args) =>{
 
     async function fetchNews()
     {
-        /*
+        
         const response1 = await axios.post('/fetchNEWS', {"index": 0});
         const response2 = await axios.post('/fetchNEWS', {"index": 1});
         
@@ -67,7 +67,7 @@ const Dashboard = (args) =>{
         setNewsTitle2(response2.data[0])
         setNewsDesc2(response2.data[1])
         setImageURL2(response2.data[2])
-    */
+    
     }
 
 
