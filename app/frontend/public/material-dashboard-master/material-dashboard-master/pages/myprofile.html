@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
-    <link rel="stylesheet" href="../assets/css/material-dashboard.css?v=3.2.0">
+   
     <style>
         body {
             display: flex;
@@ -71,79 +71,7 @@
         }
 
         /* Content Styles */
-        .content {
-            flex: 1;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center; /* Center horizontally */
-            background-color: #f0f0f0; /* Light grey background for content area */
-            width: 100%; /* Ensure content takes up full width */
-        }
-
-        h1 {
-            color: #333; /* Dark grey color for the MyProfile header */
-            text-align: center; /* Center the MyProfile header */
-            width: 100%;
-        }
-
-        /* Sidebar - Move Log Out to the bottom */
-        .logout-container {
-            margin-top: auto; /* Pushes it to the bottom */
-        }
-
-        /* Chart Styles */
-        .pie-chart-container {
-            width: 400px; /* Larger size */
-            height: 400px; /* Larger size */
-            margin-top: 30px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* My Portfolio Header Styles */
-        .my-portfolio-header {
-            font-size: 18px;
-            color: #333;
-            margin-top: 20px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        /* Total Header Styles */
-        .total-header {
-            font-size: 18px;
-            color: #333;
-            margin-top: 20px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .total-value {
-            font-size: 24px;
-            color: #333;
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        /* Stock Prices Container */
-        .stock-prices {
-            position: absolute;
-            right: 20px; /* Align to the right */
-            top: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            color: #333; /* Dark grey color */
-        }
-
-        .stock-prices div {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
+       
 
     </style>
 </head>
@@ -200,74 +128,10 @@
     <div class="stock3" id="stock3">Stock 3: $135.25</div> <!-- Example price for Stock 3 -->
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     // Pie chart data
-    const data = {
-        labels: ['Stock 1', 'Stock 2', 'Stock 3'],
-        datasets: [{
-            data: [300, 150, 250],
-            backgroundColor: ['#43A047', '#1E88E5', '#E53935'],
-            hoverBackgroundColor: ['#388E3C', '#1976D2', '#D32F2F'],
-        }]
-    };
-
-    // Pie chart options
-    const options = {
-        responsive: true,
-        plugins: {
-            legend: {
-                position: 'top',
-            },
-            tooltip: {
-                callbacks: {
-                    label: function(tooltipItem) {
-                        return "$" + tooltipItem.raw.toFixed(2); // Add dollar sign to the tooltip
-                    }
-                }
-            }
-        }
-    };
-
-    // Create the pie chart
-    const ctx = document.getElementById('pie-chart').getContext('2d');
-    new Chart(ctx, {
-        type: 'pie',
-        data: data,
-        options: options
-    });
-
-    // Calculate and display the total stock value
-    const totalStockValue = data.datasets[0].data.reduce((acc, value) => acc + value, 0);
-    document.getElementById('total-value').textContent = "$" + totalStockValue.toFixed(2); // Format with dollar sign
-
-    // Stock prices (current and previous day prices)
-    const currentPrices = {
-        stock1: 150.50,
-        stock2: 210.75,
-        stock3: 135.25
-    };
-
-    const previousPrices = {
-        stock1: 140.00,
-        stock2: 200.00,
-        stock3: 130.00
-    };
-
-    // Stock price updates: Compare current price to the previous day's price
-    const stockPrices = [
-        { elementId: 'stock1', currentPrice: currentPrices.stock1, previousPrice: previousPrices.stock1 },
-        { elementId: 'stock2', currentPrice: currentPrices.stock2, previousPrice: previousPrices.stock2 },
-        { elementId: 'stock3', currentPrice: currentPrices.stock3, previousPrice: previousPrices.stock3 }
-    ];
-
-    stockPrices.forEach(stock => {
-        const stockElement = document.getElementById(stock.elementId);
-        const priceChange = stock.currentPrice - stock.previousPrice;
-        const priceColor = priceChange >= 0 ? 'green' : 'red'; // Green if up, red if down
-        stockElement.textContent = `${stock.elementId.replace('stock', 'Stock ')}: $${stock.currentPrice.toFixed(2)}`;
-        stockElement.style.color = priceColor; // Set color based on price change
-    });
+    
 </script>
 </body>
 </html>

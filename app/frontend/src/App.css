@@ -22,6 +22,75 @@ body {
   background-size: 40px 40px; /* Adjusted for more prominent visibility */
   background-repeat: repeat;
 }
+.content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center; /* Center horizontally */
+  background-color: #f0f0f0; /* Light grey background for content area */
+  width: 100%; /* Ensure content takes up full width */
+}
+
+
+
+/* Sidebar - Move Log Out to the bottom */
+.logout-container {
+  margin-top: auto; /* Pushes it to the bottom */
+}
+
+/* Chart Styles */
+.pie-chart-container {
+  width: 400px; /* Larger size */
+  height: 400px; /* Larger size */
+  margin-top: 30px;
+  padding: 20px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* My Portfolio Header Styles */
+.my-portfolio-header {
+  font-size: 18px;
+  color: #333;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* Total Header Styles */
+.total-header {
+  font-size: 18px;
+  color: #333;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.total-value {
+  font-size: 24px;
+  color: #333;
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Stock Prices Container */
+.stock-prices {
+  position: absolute;
+  right: 20px; /* Align to the right */
+  top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: #333; /* Dark grey color */
+}
+
+.stock-prices div {
+  font-size: 18px;
+  margin-bottom: 10px;
+}
 .card {
   border: none;
 }
@@ -151,8 +220,6 @@ body {
 }
 
 canvas {
-  width: 180px !important;
-  height: 120px !important;
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
