@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import "./App.css"
 import axios from 'axios';
 import Dashboard from './Dashboard';
+import Register from './Register';
 
 const Login = (args) => {
   const [username, setUsername] = useState('');
@@ -9,6 +10,7 @@ const Login = (args) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [LoggedIn, setLoggedIN] = useState(false)
+  const [Registered , setRegistered] = useState(true)
 
     useEffect(() => {
         //jj()
@@ -28,15 +30,8 @@ const Login = (args) => {
   // Handle form submission for registration
   const handleRegister = async (event) => {
     event.preventDefault();
-
-    try {
-      const response = await axios.post('/register', { username, password });
-      setSuccess(response.data.message);
-      setError('');
-    } catch (err) {
-      setError(err.response.data.error);
-      setSuccess('');
-    }
+    setRegistered(false)
+  
   };
 
 
@@ -59,6 +54,8 @@ const Login = (args) => {
   return (
    <>
     {!LoggedIn ?(
+      <>
+      {Registered ? (
       <>
     <head>
 <title>
@@ -107,12 +104,13 @@ const Login = (args) => {
                   <input type="password" class="form-control" placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)}/>
                 </div>
                 <div class="form-check form-switch d-flex align-items-center mb-3">
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {success && <p style={{ color: 'green' }}>{success}</p>}
+               
                 </div>
                 <div class="text-center">
                   <button type="button" class="btn btn-primary w-100 my-4 mb-2" onClick={handleLogin}>Sign in</button>
                 </div>
+                {error && <p style={{ color: 'red' }}>{error}</p>}
+                {success && <p style={{ color: 'green' }}>{success}</p>}
                 <p class="mt-4 text-sm text-center" >
                   Don't have an account?
                   <button class="btn-primary" style={{marginLeft:'5%'}} onClick={handleRegister}>Register</button>
@@ -136,8 +134,12 @@ const Login = (args) => {
     </footer>
   </div>
 </main>
-    
    </body>
+   </>
+      ):(
+        <Register></Register>
+      )
+    }
    </>
     ):(
       <Dashboard username = {username}  getStockData = {args.getStockData} />

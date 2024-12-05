@@ -1,10 +1,11 @@
 import {React, useState, useEffect} from "react"
 import axios from "axios"
 import { Chart, LinearScale, CategoryScale, LineElement, PointElement, Title, Tooltip, Legend, LineController, PieController, ArcElement } from "chart.js";
+import userImage from "./assets/userprofile.webp"
 
 Chart.register(LinearScale, CategoryScale, LineElement, PointElement, Title, Tooltip, Legend, LineController, PieController, ArcElement);
 
-const MyProfile = () => {
+const MyProfile = (args) => {
 
 useEffect(() =>{
 
@@ -91,8 +92,8 @@ return (
 
   
     <div class="profile">
-        <img src="https://via.placeholder.com/150" alt="User Profile Picture"/>
-        <div>Hello, username!</div> 
+        <img src={userImage} alt="User Profile Picture"/>
+        <div>Hello, {args.username}</div> 
     </div>
 
     <ul>

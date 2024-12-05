@@ -21,17 +21,19 @@ const Dashboard = (args) =>{
     const [NewsTitle1, setNewsTitle1] = useState(null)
     const [NewsDesc1, setNewsDesc1] = useState(null)
     const [imageURL1, setImageURL1] = useState(null)
+    const [link1, setlink1] = useState(null)
 
     const [NewsTitle2, setNewsTitle2] = useState(null)
     const [NewsDec2, setNewsDesc2] = useState(null)
     const [imageURL2, setImageURL2] = useState(null)
+    const [link2, setlink2] = useState(null)
 
     const [LoggedOut, setLogout] = useState(false)
     const [MyProfile, setMyProfile] = useState(false)
 
 
     useEffect(() => {
-        if((NewsTitle1, NewsDesc1, imageURL1, NewsTitle2, NewsDec2, imageURL2) != null)
+        if((NewsTitle1, NewsDesc1, imageURL1, NewsTitle2, NewsDec2, imageURL2, link1, link2) != null)
         {
             setNewsLoaded(true)
         }
@@ -63,10 +65,12 @@ const Dashboard = (args) =>{
         setNewsTitle1(response1.data[0])
         setNewsDesc1(response1.data[1])
         setImageURL1(response1.data[2])
+        setlink1(response1.data[3])
 
         setNewsTitle2(response2.data[0])
         setNewsDesc2(response2.data[1])
         setImageURL2(response2.data[2])
+        setlink2(response2.data[3])
     
     }
 
@@ -144,7 +148,7 @@ const Dashboard = (args) =>{
 
     <ul>
         <li onClick={() => setMyProfile(true)}>My Investments</li>
-        <li>Fake Button</li>
+        <li onClick={() => alert("You weren't suppose to notice this!")}>Fake Button</li>
     </ul>
 
     <div class="logout-container">
@@ -160,9 +164,10 @@ const Dashboard = (args) =>{
     <h2 class="news-header">News</h2>
 
     {NewsLoaded ? ( 
-        
+       
     <div className="news-cards-container">
-    <div className="news-card">
+         <a href = {link1}> 
+    <div className="news-card" >
         <img src={imageURL1} width= '140px' height= '141px' alt="News Thumbnail" />
         <div className="news-content">
             <h3 className="news-title" style={{fontSize:'large', paddingLeft:'2%'}}>{NewsTitle1}</h3>
@@ -171,8 +176,11 @@ const Dashboard = (args) =>{
             </p>
         </div>
     </div>
+    </a>
 
-    <div className="news-card">
+
+    <a href={link2}>
+    <div className="news-card" >
         <img src={imageURL2}  width= '140px' height= '141px' alt="News Thumbnail" />
         <div className="news-content">
             <h3 className="news-title" style={{fontSize:'large', paddingLeft:'2%'}} >{NewsTitle2}</h3>
@@ -180,8 +188,9 @@ const Dashboard = (args) =>{
                 {NewsDec2}
                 </p>
         </div>
+        
     </div>
-    
+    </a>
     
     
 
@@ -197,9 +206,9 @@ const Dashboard = (args) =>{
 </div>
 <div class="graphs-container">
     <div class="graph-header">Stock 1</div>
-    <canvas id="line-chart-1"></canvas>
+    <canvas id="line-chart-1" style={{marginBottom:'25%'}}></canvas>
     <div class="graph-header">Stock 2</div>
-    <canvas id="line-chart-2"></canvas>
+    <canvas id="line-chart-2" style={{marginBottom:'25%'}}></canvas>
     <div class="graph-header">Stock 3</div>
     <canvas id="line-chart-3"></canvas>
 </div>
@@ -209,7 +218,7 @@ const Dashboard = (args) =>{
 </body>
 </>
 ): (
-  <MyProfilePage></MyProfilePage>
+  <MyProfilePage username = {args.username}></MyProfilePage>
 )}
 </>
     ): (

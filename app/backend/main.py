@@ -115,9 +115,9 @@ def register():
 def getAssessment():
     data = request.get_json()
     index = data.get("index")
-    title, newsFeed, image = TrackPolitician(index)
+    title, newsFeed, image, link = TrackPolitician(index)
     summary = openAI(news_Sys_PROMPT, newsFeed)
-    return jsonify(title, summary, image), 200
+    return jsonify(title, summary, image, link), 200
 
 
 @app.route('/fetchConsultant', methods =["POST"])
@@ -154,8 +154,8 @@ def openAI(sysprompt, content):
         }
     ]
 )
-
-   # print(completion.choices[0].message)
+    print('\n')
+    print(completion.choices[0].message.content)
     return completion.choices[0].message.content
 
 
@@ -198,7 +198,7 @@ def forward_response():
 
 def TrackPolitician(index):
    
-    keyword ="top investments"
+    keyword ="trending stocks"
     api = NewsDataApiClient(apikey=newsApiKey)
     response = api.news_api(q=keyword, max_result=2, country="us", language="en") 
     print(response["results"][index])
@@ -207,12 +207,17 @@ def TrackPolitician(index):
     title = response["results"][index]["title"]
     desc = response["results"][index]["description"]
     content = response["results"][index]["content"]
+    
     image = response["results"][index]["image_url"]
+    if image == None:
+        image = response["results"][index]["source_icon"]
+   
+    link = response["results"][index]["link"]
     if desc is None:
         desc= ''
     
     response = title + desc + content
-    return (title, response, image)
+    return (title, response, image, link)
 
 
 def GetStockNews(stockName):
