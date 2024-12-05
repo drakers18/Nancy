@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
-   
+    <link rel="stylesheet" href="../assets/css/material-dashboard.css?v=3.2.0">
     <style>
         body {
             display: flex;
@@ -70,9 +70,97 @@
             background-color: #004085; /* Even darker blue on hover */
         }
 
-        /* Content Styles */
-       
+        /* Main Content Styles */
+        .content {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f0f0;
+            width: 100%;
+            position: relative;
+        }
 
+        h1 {
+            color: #333; /* Dark grey color for the MyProfile header */
+            text-align: center;
+            width: 100%;
+        }
+
+        /* Sidebar - Move Log Out to the bottom */
+        .logout-container {
+            margin-top: auto;
+        }
+
+        /* Stock Prices Section (Moved to Right) */
+        .stock-prices {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+
+        .stock-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            width: 100%;
+        }
+
+        .stock-name {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .stock-price {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .stock-price.up {
+            color: green;
+        }
+
+        .stock-price.down {
+            color: red;
+        }
+
+        /* Pie Chart and Total Styles */
+        .pie-chart-container {
+            width: 400px;
+            height: 400px;
+            margin-top: 30px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .total-header {
+            font-size: 18px;
+            color: #333;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .total-value {
+            font-size: 24px;
+            color: #333;
+            margin-top: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -83,20 +171,20 @@
         Nancy.io
     </div>
 
-    <!-- Profile Picture and Greeting Message (Above Sidebar Buttons) -->
+    <!-- Profile Picture and Greeting Message -->
     <div class="profile">
         <img src="https://via.placeholder.com/150" alt="User Profile Picture">
-        <div>Hello, username!</div> <!-- Changed to "Hello, username!" -->
+        <div>Hello, username!</div>
     </div>
 
     <!-- Sidebar Buttons -->
     <ul>
-        <li>Dashboard</li> <!-- New Dashboard Button -->
+        <li>Dashboard</li>
         <li>MyProfile</li>
         <li>Settings</li>
     </ul>
 
-    <!-- Log Out Button at the Bottom -->
+    <!-- Log Out Button -->
     <div class="logout-container">
         <ul>
             <li>Log Out</li>
@@ -106,33 +194,67 @@
 
 <!-- Main Content -->
 <div class="content">
-    <h1>My Profile</h1> <!-- Centered MyProfile header -->
-
-    <!-- My Portfolio Header -->
-    <div class="my-portfolio-header">My Portfolio</div>
+    <h1>My Profile</h1>
 
     <!-- Pie Chart -->
     <div class="pie-chart-container">
         <canvas id="pie-chart"></canvas>
     </div>
 
-    <!-- Total Header and Value -->
+    <!-- Total -->
     <div class="total-header">Total</div>
     <div class="total-value" id="total-value">$0.00</div>
 </div>
 
 <!-- Stock Prices Section -->
 <div class="stock-prices">
-    <div class="stock1" id="stock1">Stock 1: $150.50</div> <!-- Example price for Stock 1 -->
-    <div class="stock2" id="stock2">Stock 2: $210.75</div> <!-- Example price for Stock 2 -->
-    <div class="stock3" id="stock3">Stock 3: $135.25</div> <!-- Example price for Stock 3 -->
+    <div class="stock-item">
+        <div class="stock-name">Stock 1</div>
+        <div class="stock-price up" id="stock1">$150.50</div>
+    </div>
+    <div class="stock-item">
+        <div class="stock-name">Stock 2</div>
+        <div class="stock-price down" id="stock2">$210.75</div>
+    </div>
+    <div class="stock-item">
+        <div class="stock-name">Stock 3</div>
+        <div class="stock-price up" id="stock3">$135.25</div>
+    </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
     // Pie chart data
-    
+    const data = {
+        labels: ['Stock 1', 'Stock 2', 'Stock 3'],
+        datasets: [{
+            data: [300, 150, 250],
+            backgroundColor: ['#43A047', '#1E88E5', '#E53935'],
+        }]
+    };
+
+    // Pie chart options
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+        }
+    };
+
+    // Create the pie chart
+    const ctx = document.getElementById('pie-chart').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: data,
+        options: options
+    });
+
+    // Calculate and display the total stock value
+    const totalStockValue = data.datasets[0].data.reduce((acc, value) => acc + value, 0);
+    document.getElementById('total-value').textContent = "$" + totalStockValue.toFixed(2);
 </script>
+
 </body>
 </html>
-
