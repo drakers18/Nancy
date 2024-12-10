@@ -91,12 +91,13 @@ useEffect(() =>{
 
     console.log(stockPrices)
 
-    stockPrices.forEach(stock => {
+    stockPrices.forEach((stock, index) => {
         const stockElement = document.getElementById(stock.elementId);
         const priceChange = stock.currentPrice - stock.previousPrice;
         const priceColor = priceChange >= 0 ? 'green' : 'red'; // Green if up, red if down
-        stockElement.textContent = `${stock.elementId.replace('stock', 'Stock ')}: $${stock.currentPrice.toFixed(2)}`;
+        stockElement.textContent = `${allStocks[index]?.Stock || stock.elementId.replace('NA', 'NA')}: $${stock.currentPrice.toFixed(2)}`;
         stockElement.style.color = priceColor; // Set color based on price change
+    
     });
     // Calculate and display the total stock value
      // Format with dollar sign
@@ -139,7 +140,8 @@ async function updateStocks()
             console.log("total Cost: "+totalCost)
         try {
           
-            const currentPrice = await args.getStockData(Tag);
+           // const currentPrice = await args.getStockData(Tag);
+           const currentPrice = "555.91"
             if(currentPrice == NaN){
                 currentPrice = 0
                 console.log("Current Price API EXPIRED SETTING VAL TO 0")
