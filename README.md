@@ -1,122 +1,76 @@
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Nancy App - Dockerized Local Environment Setup
 
-INSTALL DOCKER DESKTOP IF YOU HAVENT ALREADY
-https://www.docker.com/products/docker-desktop/
+Welcome to the Nancy App! Follow these instructions to set up the application in a Dockerized local environment.
 
-# Create Network
+---
+
+## Prerequisites
+
+1. **Install Docker Desktop**  
+   Download and install Docker Desktop: [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+
+---
+
+## Setup Steps
+
+### 1. Create a Docker Network
+```bash
 docker network create Nancy_network
-# Build Frontend
+```
+
+
+### 2. Build and Run the Frontend
+Navigate to the frontend directory and build the frontend container (from root):
+cd app
 cd frontend
-# Build Backend 
-cd ..
+docker build -t nancyfrontend .
+
+### 3. Build the Backend
+Navigate to the backend directory and build the backend container (from root) :
+
+cd app
 cd backend
 docker build -t nancyback .
 
-## Build DB's
-# cd ..
- # cd ..
-in root do: cd db
-## First DB 
-cd signIn (in db)
+
+
+### 4. Build the Databases
+First Database: signIn
+Navigate to the db/signIn directory and build the signIn database container  FROM PROJECT ROOT:
+cd db
+cd signIn
 docker build -t signdb .
 
-# Second DB
-cd ..
-cd stockDB (in db)
+
+Second Database: stockDB
+Navigate to the db/stockDB directory and build the signIn database container  FROM PROJECT ROOT:
+cd db
+cd stockDB
 docker build -t stockdb .
 
+### Final Steps: Putting It All Together
+1. Build and Run the App
+Navigate to the app directory and build the containers for the frontend and backend (FROM PROJECT ROOT):
 
-### FINALLY ###
-We put it all together:
-in app dir (cd app)
+cd app
+docker compose build
+docker compose up
 
-``` docker compose build``` (build containers)
-``` docker compose up ``` (run frontend and backend)
-
-
-# THEN ITS TIME FOR THE DB's
+## 2. Build and Run the Databases
+Navigate to the db directory and build the containers for the databases:
+cd ..
 cd db
-``` docker compose build```
-``` docker compose up```
+docker compose build
+docker compose up
 
 
 ### NOW ITS RUNNING ON LOCALHOST:3000!
 
+Notes:
+-Make Sure to replace your api keys in ENV
+- use NGROK For Dialogflow Bot
 
 
-
-
-
-
-
-
-
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
