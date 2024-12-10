@@ -140,8 +140,7 @@ async function updateStocks()
             console.log("total Cost: "+totalCost)
         try {
           
-           // const currentPrice = await args.getStockData(Tag);
-           const currentPrice = "555.91"
+           const currentPrice = await args.getStockData(Tag);
             if(currentPrice == NaN){
                 currentPrice = 0
                 console.log("Current Price API EXPIRED SETTING VAL TO 0")

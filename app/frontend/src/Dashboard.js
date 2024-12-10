@@ -40,7 +40,7 @@ const Dashboard = (args) =>{
 
 
     useEffect(() => {
-      //  fetchNews()
+        fetchNews()
         // Ensure the DOM is ready before creating the charts
         const chart1 = document.getElementById("line-chart-1");
         const chart2 = document.getElementById("line-chart-2");
@@ -214,9 +214,9 @@ const Dashboard = (args) =>{
 
 </div>
 <div class="graphs-container">
-    <div class="graph-header">Stock 1</div>
+    <div class="graph-header">VOO</div>
     <canvas id="line-chart-1" style={{marginBottom:'25%'}}></canvas>
-    <div class="graph-header">Stock 2</div>
+    <div class="graph-header">TSLA</div>
     <canvas id="line-chart-2" style={{marginBottom:'25%'}}></canvas>
     <div class="graph-header">CryptoZoo</div>
     <canvas id="line-chart-3"></canvas>
