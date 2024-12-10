@@ -1,0 +1,124 @@
+Successful Registration Test
+{
+    "request": {
+        "method": "POST",
+        "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+        ],
+        "body": {
+            "mode": "raw",
+            "raw": "{\"username\": \"testuser\", \"password\": \"securepassword123\"}"
+        },
+        "url": {
+            "raw": "http://localhost:3000/register",
+            "protocol": "http",
+            "host": [
+                "localhost"
+            ],
+            "port": "3000",
+            "path": [
+                "register"
+            ]
+        }
+    },
+    "tests": {
+        "Successful Registration": "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Response contains success message\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.message).to.eql(\"Registration successful\");\n});"
+    }
+}
+
+Missing Fields Register
+{
+    "request": {
+        "method": "POST",
+        "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+        ],
+        "body": {
+            "mode": "raw",
+            "raw": "{\"username\": \"\", \"password\": \"\"}"
+        },
+        "url": {
+            "raw": "http://localhost:3000/register",
+            "protocol": "http",
+            "host": [
+                "localhost"
+            ],
+            "port": "3000",
+            "path": [
+                "register"
+            ]
+        }
+    },
+    "tests": {
+        "Missing Fields": "pm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\npm.test(\"Response contains error message\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.error).to.eql(\"Username and password are required\");\n});"
+    }
+}
+
+Successful Login
+{
+    "request": {
+        "method": "POST",
+        "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+        ],
+        "body": {
+            "mode": "raw",
+            "raw": "{\"username\": \"testuser\", \"password\": \"securepassword123\"}"
+        },
+        "url": {
+            "raw": "http://localhost:3000/login",
+            "protocol": "http",
+            "host": [
+                "localhost"
+            ],
+            "port": "3000",
+            "path": [
+                "login"
+            ]
+        }
+    },
+    "tests": {
+        "Successful Login": "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\npm.test(\"Response contains success message\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.message).to.eql(\"Login successful\");\n});"
+    }
+}
+
+Missing Fields Login
+{
+    "request": {
+        "method": "POST",
+        "header": [
+            {
+                "key": "Content-Type",
+                "value": "application/json"
+            }
+        ],
+        "body": {
+            "mode": "raw",
+            "raw": "{\"username\": \"\", \"password\": \"\"}"
+        },
+        "url": {
+            "raw": "http://localhost:3000/login",
+            "protocol": "http",
+            "host": [
+                "localhost"
+            ],
+            "port": "3000",
+            "path": [
+                "login"
+            ]
+        }
+    },
+    "tests": {
+        "Missing Fields": "pm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\npm.test(\"Response contains error message\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.error).to.eql(\"Username and password are required\");\n});"
+    }
+}
+
