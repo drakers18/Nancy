@@ -24,48 +24,54 @@ docker network create Nancy_network
 
 ### 2. Build and Run the Frontend
 Navigate to the frontend directory and build the frontend container (from root):
+```
 cd app
 cd frontend
 docker build -t nancyfrontend .
-
+```
 ### 3. Build the Backend
 Navigate to the backend directory and build the backend container (from root) :
-
+```
 cd app
 cd backend
 docker build -t nancyback .
-
+```
 
 
 ### 4. Build the Databases
 First Database: signIn
 Navigate to the db/signIn directory and build the signIn database container  FROM PROJECT ROOT:
+```
 cd db
 cd signIn
 docker build -t signdb .
-
+```
 
 Second Database: stockDB
 Navigate to the db/stockDB directory and build the signIn database container  FROM PROJECT ROOT:
+```
 cd db
 cd stockDB
 docker build -t stockdb .
+```
 
 ### Final Steps: Putting It All Together
 1. Build and Run the App
 Navigate to the app directory and build the containers for the frontend and backend (FROM PROJECT ROOT):
-
+```
 cd app
 docker compose build
 docker compose up
+```
 
 ## 2. Build and Run the Databases
 Navigate to the db directory and build the containers for the databases:
+```
 cd ..
 cd db
 docker compose build
 docker compose up
-
+```
 
 ### NOW ITS RUNNING ON LOCALHOST:3000!
 
