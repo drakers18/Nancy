@@ -3,7 +3,6 @@ import axios from "axios";
 import {React, useEffect, useState} from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import InvestModal from "./components/InvestModal";
-import DialogFlowChatbot from "./components/DialogFlow";
 import { Chart, LinearScale, CategoryScale, LineElement, PointElement, Title, Tooltip, Legend, LineController } from "chart.js";
 import Login from "./Login";
 import MyProfilePage from "./MyProfile"
@@ -30,7 +29,7 @@ const Dashboard = (args) =>{
 
     const [LoggedOut, setLogout] = useState(false)
     const [MyProfile, setMyProfile] = useState(false)
-
+    console.log("Logged in: "+args.LoggedIn)
 
     useEffect(() => {
         if((NewsTitle1, NewsDesc1, imageURL1, NewsTitle2, NewsDec2, imageURL2, link1, link2) != null)
@@ -41,7 +40,7 @@ const Dashboard = (args) =>{
 
 
     useEffect(() => {
-        fetchNews()
+      //  fetchNews()
         // Ensure the DOM is ready before creating the charts
         const chart1 = document.getElementById("line-chart-1");
         const chart2 = document.getElementById("line-chart-2");
@@ -72,6 +71,16 @@ const Dashboard = (args) =>{
         setImageURL2(response2.data[2])
         setlink2(response2.data[3])
     
+    }
+    async function getAllInvestments(){
+        const invest = await axios.get("/getAllInvestments")
+        console.log(invest)
+    }
+
+    function Logout()
+    {
+        args.setSuccess('')
+        args.setLoggedIN(false)
     }
 
 
@@ -125,9 +134,9 @@ const Dashboard = (args) =>{
     return (
     
        <>
-         {!LoggedOut ? (
+         {args.LoggedIn ? (
             <>
-        <DialogFlowChatbot/>
+       
       
             {!MyProfile ? (
                 <>
@@ -148,12 +157,12 @@ const Dashboard = (args) =>{
 
     <ul>
         <li onClick={() => setMyProfile(true)}>My Investments</li>
-        <li onClick={() => alert("You weren't suppose to notice this!")}>Fake Button</li>
+        <li onClick={() => getAllInvestments()}>Fake Button</li>
     </ul>
 
     <div class="logout-container">
         <ul>
-            <li onClick={() => setLogout(true)}>Log Out</li>
+            <li onClick={() => Logout()}>Log Out</li>
         </ul>
     </div>
 </div>
@@ -209,7 +218,7 @@ const Dashboard = (args) =>{
     <canvas id="line-chart-1" style={{marginBottom:'25%'}}></canvas>
     <div class="graph-header">Stock 2</div>
     <canvas id="line-chart-2" style={{marginBottom:'25%'}}></canvas>
-    <div class="graph-header">Stock 3</div>
+    <div class="graph-header">CryptoZoo</div>
     <canvas id="line-chart-3"></canvas>
 </div>
 
@@ -218,7 +227,7 @@ const Dashboard = (args) =>{
 </body>
 </>
 ): (
-  <MyProfilePage username = {args.username}></MyProfilePage>
+  <MyProfilePage username = {args.username} getStockData = {args.getStockData} setSuccess ={args.setSuccess} setLoggedIN ={args.setLoggedIN} LoggedIn ={args.LoggedIn} ></MyProfilePage>
 )}
 </>
     ): (

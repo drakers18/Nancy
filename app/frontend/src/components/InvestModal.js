@@ -17,17 +17,20 @@ const InvestModal = (args) =>
 
   useEffect(() =>{
     
-    if(CurrentPrice && BuyPrice && User_Balance)
+    if(CurrentPrice && BuyPrice && User_Balance && Tag && Quantity)
     {
       console.log(CurrentPrice)
       console.log(BuyPrice)
       console.log(User_Balance)
+      SendToDB()
     }
     
-  },[ CurrentPrice, BuyPrice, User_Balance])
+  },[ CurrentPrice, BuyPrice, User_Balance, Tag, Quantity])
 
   const SendToDB = async () =>
   {
+    console.log('Running DB')
+    console.log(Tag, Quantity, CurrentPrice, BuyPrice, User_Balance)
     try {
       if(Tag && Quantity && CurrentPrice && BuyPrice && User_Balance){
      let saveData = 
@@ -46,11 +49,15 @@ const InvestModal = (args) =>
 
 
       }
-      const response = await axios.post('/saveInvestment', { saveData });
+      const response = await axios.post('/saveInvestment',  saveData );
+      console.log('Saved Data:\n',saveData)
       console.log(response.data.message)
+      alert("Successfully Saved to Database!")
+      handleClose()
     }  
     } catch (err) {
       console.log("Error: ", err)
+      alert("Error: ", err)
     }
     
     
@@ -63,8 +70,7 @@ const InvestModal = (args) =>
     setCurrentPrice(cs)
     setUserBalance(cs)
     console.log(cs)
-    SendToDB()
-    handleClose()
+    
   }
 
 return (
