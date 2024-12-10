@@ -14,9 +14,9 @@ cd ..
 cd backend
 docker build -t nancyback .
 
-# Build DB's
-cd ..
-cd ..
+## Build DB's
+# cd ..
+ # cd ..
 in root do: cd db
 ## First DB 
 cd signIn (in db)
