@@ -279,7 +279,7 @@ def get_current_stock_price(stock_symbol):
             open_price = data['Time Series (1min)'][last_refreshed]['1. open']
             return open_price
         else:
-            return "Error: Could not retrieve stock data. Check the symbol or API limits."
+            return "0"
     else:
         return f"Error: {response.status_code}, {response.text}"
 

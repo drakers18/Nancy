@@ -80,6 +80,7 @@ def getAllJobPresets():
             preset["uuid"] = i["uuid"]
            
             stock.append(preset)
+            print(stock)
 
     except sqlite3.Error as e:
         print(f"SQLite error: {e}")

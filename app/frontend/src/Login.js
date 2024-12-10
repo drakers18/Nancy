@@ -3,6 +3,7 @@ import "./App.css"
 import axios from 'axios';
 import Dashboard from './Dashboard';
 import Register from './Register';
+import DialogFlowChatbot from "./components/DialogFlow";
 
 const Login = (args) => {
   const [username, setUsername] = useState('');
@@ -12,9 +13,7 @@ const Login = (args) => {
   const [LoggedIn, setLoggedIN] = useState(false)
   const [Registered , setRegistered] = useState(true)
 
-    useEffect(() => {
-        //jj()
-    },[])
+
 
   useEffect(() =>{
     if(success != '')
@@ -109,8 +108,10 @@ const Login = (args) => {
                 <div class="text-center">
                   <button type="button" class="btn btn-primary w-100 my-4 mb-2" onClick={handleLogin}>Sign in</button>
                 </div>
-                {error && <p style={{ color: 'red' }}>{error}</p>}
-                {success && <p style={{ color: 'green' }}>{success}</p>}
+               <div>
+               {error && <p style={{ color: 'red' }}>{error}</p>}
+               {success && <p style={{ color: 'green' }}>{success}</p>}
+               </div>
                 <p class="mt-4 text-sm text-center" >
                   Don't have an account?
                   <button class="btn-primary" style={{marginLeft:'5%'}} onClick={handleRegister}>Register</button>
@@ -142,7 +143,10 @@ const Login = (args) => {
     }
    </>
     ):(
-      <Dashboard username = {username}  getStockData = {args.getStockData} />
+      <>
+      <DialogFlowChatbot/>
+      <Dashboard username = {username}  getStockData = {args.getStockData} setLoggedIN ={setLoggedIN} LoggedIn ={LoggedIn} setSuccess ={setSuccess} />
+      </>
     )
   }
   
