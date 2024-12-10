@@ -157,7 +157,7 @@ const Dashboard = (args) =>{
 
     <ul>
         <li onClick={() => setMyProfile(true)}>My Investments</li>
-        <li onClick={() => getAllInvestments()}>Fake Button</li>
+        <li onClick={() => alert("This becomes a real button when you pay me !!!!")}>Fake Button</li>
     </ul>
 
     <div class="logout-container">
@@ -205,7 +205,7 @@ const Dashboard = (args) =>{
 
 </div>
     ):(
-        <p style={{fontSize:'large', backgroundColor:'black'}}>Loading ...</p>
+        <p style={{fontSize:'xx-large', color:'black'}}>Loading ...</p>
 )}
 
 <h2 class="invest-header" style={{marginTop:'2%'}}>Invest</h2>
