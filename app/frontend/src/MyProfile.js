@@ -226,9 +226,9 @@ return (
 )}
 
 <div class="stock-prices">
-    <div class="stock1" id="stock1">{(allStocks[0]?.Stock)}: {(allStocks[0]?.Buy_Price)}</div> 
-    <div class="stock2" id="stock2">Stock 2: {(allStocks[1]?.Buy_Price)}</div> 
-    <div class="stock3" id="stock3">Stock 3: {(allStocks[2]?.Buy_Price)}</div>
+    <div class="stock1" id="stock1">{(allStocks[0]?.Stock) || 'NA'}: {(allStocks[0]?.Buy_Price) || 0}</div> 
+    <div class="stock2" id="stock2">{(allStocks[1]?.Stock) || 'NA'}: {(allStocks[1]?.Buy_Price)|| 0}</div> 
+    <div class="stock3" id="stock3">{(allStocks[2]?.Stock) || 'NA'}: {(allStocks[2]?.Buy_Price)|| 0}</div>
 </div>
 
 
