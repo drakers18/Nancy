@@ -1,3 +1,5 @@
+--Deliverable 4--
+
 Successful Registration Test
 {
     "request": {
@@ -122,3 +124,131 @@ Missing Fields Login
     }
 }
 
+
+--Deliverable 2--
+Get All Investments
+
+GET http://localhost:5000/getAllInvestments
+[
+    {
+        "investment_id": 1,
+        "stock_name": "AAPL",
+        "investment_date": "2023-01-01",
+        "amount": 1000
+    },
+    {
+        "investment_id": 2,
+        "stock_name": "TSLA",
+        "investment_date": "2023-02-15",
+        "amount": 2000
+    }
+]
+
+Delete Investment 
+
+POST http://localhost:5000/deleteINV
+Content-Type: application/json
+
+{
+    "investment_id": 1
+}
+{
+    "message": "Investment deleted successfully."
+}
+
+Get Stock 
+
+POST http://localhost:5000/getStock
+Content-Type: application/json
+
+{
+    "stock_name": "AAPL"
+}
+{
+    "stock_name": "AAPL",
+    "current_price": "175.50",
+    "change_percentage": "+2.1%"
+}
+
+Save Investment 
+
+POST http://localhost:5000/saveInvestment
+Content-Type: application/json
+
+{
+    "stock_name": "GOOG",
+    "investment_date": "2023-12-01",
+    "amount": 1500
+}
+{
+    "message": "Investment saved successfully."
+}
+
+Log In 
+
+POST http://localhost:5000/login
+Content-Type: application/json
+
+{
+    "username": "user1",
+    "password": "password123"
+}
+{
+    "message": "Login successful.",
+    "token": "abc123xyz"
+}
+{
+    "message": "Invalid username or password."
+}
+
+Register 
+
+POST http://localhost:5000/register
+Content-Type: application/json
+
+{
+    "username": "newuser",
+    "password": "newpassword123"
+}
+{
+    "message": "User registered successfully."
+}
+
+Fetch News 
+
+POST http://localhost:5000/fetchNEWS
+Content-Type: application/json
+
+{
+    "index": 0
+}
+{
+    "title": "Top Stock News Today",
+    "summary": "The stock market saw a significant rally...",
+    "image": "https://example.com/image.jpg",
+    "link": "https://example.com/news-article"
+}
+
+Fetch Consultant 
+
+POST http://localhost:5000/fetchConsultant
+Content-Type: application/json
+
+{
+    "stock": "TSLA"
+}
+{
+    "ASK": "Based on the news and current performance, Tesla is a good investment in the long term."
+}
+
+Stock Current Price 
+
+POST http://localhost:5000/StockCurrentPrice
+Content-Type: application/json
+
+{
+    "stock": "AAPL"
+}
+{
+    "current_price": "175.50"
+}
